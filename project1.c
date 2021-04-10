@@ -71,23 +71,20 @@ void calcResponseTime(int  arr[],int arr1[],int arr2[],int size)
 		arr2[j]=rtime;
 	}
 }
-/*int  calcNonVol(struct num arr[],int size)
+int  nonSwitch(struct num arr[],int size)
 {
-	for(int i=0;i<size;i++)
-	{	int nv=0;
-		int tracker=0;
-		while(tracker<=i)
+	int nv=0;
+	for(int i=1;i<size;i++)
+	{
+		if(arr[i].id== arr[i-1].id)
 		{
-			if(arr[i].id==arr[tracker].id)
-			{
-			
-				printf("%d\n",arr[i].id);
-			}
-			tracker++;
+		
+			nv+=1;
 		}
-
+		
 	}
-}*/
+	return nv;
+}
 int main(int argc, char* argv[])
 {
         struct num buffer[SIZE];
@@ -104,7 +101,7 @@ int main(int argc, char* argv[])
         FILE* fp;
 	double  burst_time=0;
 	double throughput = 0;
-	int copy=0;
+	int no_switch=0;
         if(argc>=2)
         {
                 fp=fopen(argv[1],"r");
@@ -159,7 +156,7 @@ int main(int argc, char* argv[])
 		burst_time +=b;
 		size++;
 	} 
-	//calcNonVol(buffer,size);
+	no_switch= nonSwitch(buffer,size);
 	calcTurnaround(buffer,turnaround,size);
 	for(int k=0;k<size; k++)
 	{
@@ -189,13 +186,15 @@ int main(int argc, char* argv[])
 	//printf("%d\n",total_rt);
 	//printf("%.2f\n",waiting_time);
 	//printf("%d\n",ttotal);
+	//printf("%d\n",no_switch);
 	printf("%d\n",vol);
-	printf("%d\n",index);
+	printf("%d\n",index-no_switch);
 	printf("%.2f\n",100.00);
 	printf("%.2f\n",throughput);
 	printf("%.2f\n",turnaround_time);
 	printf("%.2f\n",waiting_time);
 	printf("%.2f\n",response);
+	
 	return 0;
 }
 
