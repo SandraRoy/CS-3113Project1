@@ -136,10 +136,11 @@ int main(int argc, char* argv[])
 		while(tracker<=size)
 		{
 
-			if(i==buffer[tracker].id)
-			{
+			if(i==buffer[tracker].id) // 1 4 2 4 4 4 2 4 2
+			{ //i=4;
 
 			index++;
+			//printf("%d\n",i);
 			}
 		
 			
@@ -182,7 +183,6 @@ int main(int argc, char* argv[])
 	//printf("%d\n",total_rt);
 	//printf("%.2f\n",waiting_time);
 	//printf("%d\n",ttotal);
-	printf("%d\n",index);
 	printf("%d\n",vol);
 	printf("%d\n",index-no_switch);
 	printf("%.2f\n",100.00);
