@@ -141,10 +141,6 @@ int main(int argc, char* argv[])
 
 			index++;
 			}
-			else
-			{
-				vol++;
-			}
 		
 			
 			tracker++;
@@ -186,7 +182,7 @@ int main(int argc, char* argv[])
 	//printf("%d\n",total_rt);
 	//printf("%.2f\n",waiting_time);
 	//printf("%d\n",ttotal);
-	//printf("%d\n",no_switch);
+	printf("%d\n",index);
 	printf("%d\n",vol);
 	printf("%d\n",index-no_switch);
 	printf("%.2f\n",100.00);
