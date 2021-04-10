@@ -85,6 +85,22 @@ int  nonSwitch(struct num arr[],int size)
 	}
 	return nv;
 }
+int countDuplicate(struct num arr[], int size)
+{
+	int index=0;
+	for(int i=0;i<size;i++)
+	{
+		int tracker=0;
+		while(tracker<=i)
+			if(arr[i].id== arr[tracker].id)
+			{
+				index++;
+			}
+		tracker++;
+	}
+	return index;
+
+}
 int main(int argc, char* argv[])
 {
         struct num buffer[SIZE];
@@ -138,9 +154,8 @@ int main(int argc, char* argv[])
 
 			if(i==buffer[tracker].id) // 1 4 2 4 4 4 2 4 2
 			{ //i=4;
-
 			index++;
-			//printf("%d\n",i);
+			break;
 			}
 		
 			
@@ -183,6 +198,8 @@ int main(int argc, char* argv[])
 	//printf("%d\n",total_rt);
 	//printf("%.2f\n",waiting_time);
 	//printf("%d\n",ttotal);
+	printf("%d\n", index);
+	printf("%d\n", no_switch);
 	printf("%d\n",vol);
 	printf("%d\n",index-no_switch);
 	printf("%.2f\n",100.00);
