@@ -71,6 +71,23 @@ void calcResponseTime(int  arr[],int arr1[],int arr2[],int size)
 		arr2[j]=rtime;
 	}
 }
+/*int  calcNonVol(struct num arr[],int size)
+{
+	for(int i=0;i<size;i++)
+	{	int nv=0;
+		int tracker=0;
+		while(tracker<=i)
+		{
+			if(arr[i].id==arr[tracker].id)
+			{
+			
+				printf("%d\n",arr[i].id);
+			}
+			tracker++;
+		}
+
+	}
+}*/
 int main(int argc, char* argv[])
 {
         struct num buffer[SIZE];
@@ -87,6 +104,7 @@ int main(int argc, char* argv[])
         FILE* fp;
 	double  burst_time=0;
 	double throughput = 0;
+	int copy=0;
         if(argc>=2)
         {
                 fp=fopen(argv[1],"r");
@@ -126,18 +144,22 @@ int main(int argc, char* argv[])
 
 			index++;
 			}
+			else
+			{
+				vol++;
+			}
 		
 			
 			tracker++;
 		}
-		vol=line-index;
+		vol=exec;
 		buffer[size].id = i;
 		buffer[size].burst = b;
 		buffer[size].priority = p;
 		burst_time +=b;
 		size++;
 	} 
-
+	//calcNonVol(buffer,size);
 	calcTurnaround(buffer,turnaround,size);
 	for(int k=0;k<size; k++)
 	{
@@ -174,5 +196,6 @@ int main(int argc, char* argv[])
 	printf("%.2f\n",turnaround_time);
 	printf("%.2f\n",waiting_time);
 	printf("%.2f\n",response);
+	return 0;
 }
 
