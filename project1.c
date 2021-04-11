@@ -9,6 +9,8 @@ struct num{
 
 };
 
+/* calcTurnaround creates an array of Turnaround times and assigns each calculated time time to an index whic is calculated by 
+ *  subtracting one from the corresponding pid. This makes sure that in case of a duplicate process id, only the turnaround time for  last occurence of the process id is calculated */ 
 void calcTurnaround (struct num arr[],int arr1[],int size)
 {
 	int ttime=0;
@@ -19,6 +21,7 @@ void calcTurnaround (struct num arr[],int arr1[],int size)
 
 	}
 }
+// calcTurnaroundResponse creates array to store turnaround times that are calculated only including first occurance od duplicate pid
 void calcTurnaroundResponse(struct num arr[],int arr1[],int size)
 {
 	for(int j=0;j<size;j++)
@@ -35,7 +38,7 @@ void calcTurnaroundResponse(struct num arr[],int arr1[],int size)
 		}
 	}
 }
-
+//calculates burst times only including first occurance of duplicate pid
 void firstBurst(struct num arr[],int arr1[],int size)
 {	
 	for(int j=0;j<size;j++)
@@ -52,17 +55,19 @@ void firstBurst(struct num arr[],int arr1[],int size)
 	}
 }
 
+//calculates and stores waiting  time for each pid
 void calcWaitingTime(struct num arr[],int arr1[],int arr2[], int size)
 {
 	int wtime=0;
 	for(int m=0;m<size;m++)
 	{
-		wtime=arr1[m]-arr[m].burst;
+		wtime=arr1[m]-arr[m].burst; //waiting time = turnaround time-burst time
 		arr2[m]=wtime;
 
 	}
 }
 
+//calculates and stores response time for each pid
 void calcResponseTime(int  arr[],int arr1[],int arr2[],int size)
 {
 	int rtime=0;
@@ -72,6 +77,7 @@ void calcResponseTime(int  arr[],int arr1[],int arr2[],int size)
 		arr2[j]=rtime;
 	}
 }
+//counts number of non switches
 int  nonSwitch(struct num arr[],int size)
 {
 	int nv=0;
@@ -104,7 +110,7 @@ int countDuplicate(struct num arr[], int size)
 }
 int main(int argc, char* argv[])
 {
-        struct num buffer[SIZE];
+        struct num buffer[SIZE]; //struct array to hold pid, burst, priority
 	
         int process;
         int line;
@@ -138,7 +144,7 @@ int main(int argc, char* argv[])
 	double waiting_time=0;
 	double response=0;
 	int non_vol =0;
-	while(size<line && !feof(fp))
+	while(size<line && !feof(fp)) // loop to read in file or through stdin
         {
 		fscanf(fp,"%d %d %d", &i,&b,&p);
 		/*if(size==0)
@@ -196,11 +202,7 @@ int main(int argc, char* argv[])
 	turnaround_time=(double)ttotal/(double)vol;
 	waiting_time =(double)wtotal/(double)vol;
 	response = (double)total_rt/(double)vol;
-	//printf("%d\n",total_rt);
-	//printf("%.2f\n",waiting_time);
-	//printf("%d\n",ttotal);
-	//printf("%d\n", index);
-	//printf("%d\n", no_switch);
+	
 	printf("%d\n",vol);
 	printf("%d\n",index-no_switch);
 	printf("%.2f\n",100.00);
