@@ -17,7 +17,7 @@ calculates waiting  time for each pid by subtracting burst time from turnaround 
 ## void calcResponseTime
 calculates and stores response time for each pid, using the arrays created in calcTurnaroundResponse and firstBurst
 
-##int  nonSwitch()
+## int  nonSwitch()
 Calculates and returns the number of places where there is no context switch
 
 ## struct num buffer[SIZE]
