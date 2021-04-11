@@ -1,15 +1,14 @@
+
 #include<stdio.h>
 #include<stdlib.h>
 #define SIZE 50000
 struct num{
-        int id;  //process if
-        int  burst; //burst time
-        int  priority; // priority number
+        int id;
+        int  burst;
+        int  priority;
 
 };
 
-/* calcTurnaround creates an array of Turnaround times and assigns each calculated time time to an index whic is calculated by 
- *  subtracting one from the corresponding pid. This makes sure that in case of a duplicate process id, only the turnaround time for  last occurence of the process id is calculated */ 
 void calcTurnaround (struct num arr[],int arr1[],int size)
 {
 	int ttime=0;
@@ -20,8 +19,6 @@ void calcTurnaround (struct num arr[],int arr1[],int size)
 
 	}
 }
-
-// calcTurnaroundResponse creates array to store turnaround times that are calculated only including first occurance od duplicate pid
 void calcTurnaroundResponse(struct num arr[],int arr1[],int size)
 {
 	for(int j=0;j<size;j++)
@@ -39,7 +36,6 @@ void calcTurnaroundResponse(struct num arr[],int arr1[],int size)
 	}
 }
 
-//calculates burst times only including first occurance of duplicare pid
 void firstBurst(struct num arr[],int arr1[],int size)
 {	
 	for(int j=0;j<size;j++)
@@ -56,30 +52,26 @@ void firstBurst(struct num arr[],int arr1[],int size)
 	}
 }
 
-//calculates and stores waiting  time for each pid
 void calcWaitingTime(struct num arr[],int arr1[],int arr2[], int size)
 {
 	int wtime=0;
 	for(int m=0;m<size;m++)
 	{
-		wtime=arr1[m]-arr[m].burst; //waiting time = turnaround time-burst time
+		wtime=arr1[m]-arr[m].burst;
 		arr2[m]=wtime;
 
 	}
 }
 
-//calculates and stores response time for each pid
 void calcResponseTime(int  arr[],int arr1[],int arr2[],int size)
 {
 	int rtime=0;
 	for(int j=0;j<size;j++)
 	{
-		rtime= arr[j]-arr1[j];// response time = turnaround time - burst time
+		rtime= arr[j]-arr1[j];
 		arr2[j]=rtime;
 	}
 }
-
-//counts number of non switches
 int  nonSwitch(struct num arr[],int size)
 {
 	int nv=0;
@@ -94,53 +86,75 @@ int  nonSwitch(struct num arr[],int size)
 	}
 	return nv;
 }
+int countDuplicate(struct num arr[], int size)
+{
+	int index=0;
+	for(int i=0;i<size;i++)
+	{
+		int tracker=0;
+		while(tracker<=i)
+			if(arr[i].id== arr[tracker].id)
+			{
+				index++;
+			}
+		tracker++;
+	}
+	return index;
 
+}
 int main(int argc, char* argv[])
 {
-        struct num buffer[SIZE]; //struct array to hold pid, burst, priority
+        struct num buffer[SIZE];
 	
         int process;
         int line;
         int exec;
 	int size=0;
 	int index=0;
-	int  vol=0; // holds number of voluntary context switches
+	int  vol=0;
         int i;
         int b;
         int p;
         FILE* fp;
-	double  burst_time=0;// holds total burst time
-	double throughput = 0;// calculates avg throughput
+	double  burst_time=0;
+	double throughput = 0;
 	int no_switch=0;
         if(argc>=2)
         {
-                fp=fopen(argv[1],"r");//reads input from file
+                fp=fopen(argv[1],"r");
         }
 	else
 	{
-		fp=stdin; //reads input from stdin
+		fp=stdin;
 	}
 	fscanf(fp,"%d",&process);
         fscanf(fp,"%d %d",&exec,&line);
-        
-        int turnaround[line];// array to store turnaround times
-        int waiting[line]; // array to store waiting times
-        int ttotal =0;// holds total turnaround time
-        int wtotal=0; // holds total waiting time
-        double turnaround_time=0;
-        double waiting_time=0;// holds avg waiting  time
-        double response=0;
-        int non_vol =0;
-
-	while(size<line && !feof(fp))// loop to read in file or through stdin
+        int repeat[line];
+	int turnaround[line];
+	int waiting[line];
+	int ttotal =0;
+	int wtotal=0;	
+	double turnaround_time=0;
+	double waiting_time=0;
+	double response=0;
+	int non_vol =0;
+	while(size<line && !feof(fp))
         {
 		fscanf(fp,"%d %d %d", &i,&b,&p);
-		int tracker=0; //Acts as an interator through all the process ids to check for duplicates
+		/*if(size==0)
+                        {
+                                turnaround[size]=b;
+                        }
+                        else
+                        {
+                                turnaround[size]=turnaround[size-1]+b;
+                        }*/
+		int tracker=0; //keeps track of repeated pid
 		while(tracker<=size)
 		{
 
-			if(i==buffer[tracker].id) //check for duplicate pids
-			{ 
+			if(i==buffer[tracker].id) // 1 4 2 4 4 4 2 4 2
+			{ //i=4;
 			index++;
 			break;
 			}
@@ -149,13 +163,9 @@ int main(int argc, char* argv[])
 			tracker++;
 		}
 		vol=exec;
-
-		//Assigning pid, burst time, and priority to the struct array
 		buffer[size].id = i;
 		buffer[size].burst = b;
 		buffer[size].priority = p;
-		
-		//calculate total burst time
 		burst_time +=b;
 		size++;
 	} 
@@ -186,7 +196,11 @@ int main(int argc, char* argv[])
 	turnaround_time=(double)ttotal/(double)vol;
 	waiting_time =(double)wtotal/(double)vol;
 	response = (double)total_rt/(double)vol;
-
+	//printf("%d\n",total_rt);
+	//printf("%.2f\n",waiting_time);
+	//printf("%d\n",ttotal);
+	//printf("%d\n", index);
+	//printf("%d\n", no_switch);
 	printf("%d\n",vol);
 	printf("%d\n",index-no_switch);
 	printf("%.2f\n",100.00);
@@ -197,4 +211,3 @@ int main(int argc, char* argv[])
 	
 	return 0;
 }
-
